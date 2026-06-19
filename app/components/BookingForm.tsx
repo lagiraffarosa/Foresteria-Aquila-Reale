@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -20,6 +19,7 @@ export default function BookingForm() {
 
   async function saveBooking(formData: FormData) {
     setMessage('Salvataggio in corso...');
+
     const surname = String(formData.get('surname') || '').trim();
     const name = String(formData.get('name') || '').trim();
     const phone = String(formData.get('phone') || '').trim();
@@ -37,19 +37,23 @@ export default function BookingForm() {
       return;
     }
 
-    const guestRes = await supabase.from('guests').insert({ surname, name, phone, email }).select('id').single();
+    const guestRes = await supabase
+      .from('guests')
+      .insert({ surname, name, phone, email })
+      .select('id')
+      .single();
+
     if (guestRes.error) {
       setMessage('Errore ospite: ' + guestRes.error.message);
       return;
     }
 
     const bookingRes = await supabase.from('bookings').insert({
-      room_id: roomId || null,
       arrival,
       departure,
       adults,
       children,
-      internal_notes: notes + (allergies ? '\nAllergie/esigenze: ' + allergies : '')
+      internal_notes: `Camera selezionata: ${roomId}\n${notes}${allergies ? '\nAllergie/esigenze: ' + allergies : ''}`
     });
 
     if (bookingRes.error) {
@@ -63,49 +67,66 @@ export default function BookingForm() {
   return (
     <form action={saveBooking} className="card">
       <h3>Scheda prenotazione completa</h3>
+
       <div className="form3">
-        <label>Cognome<input name="surname"/></label>
-        <label>Nome<input name="name"/></label>
+        <label>Cognome<input name="surname" /></label>
+        <label>Nome<input name="name" /></label>
+
         <label>Camera
           <select name="room_id">
             <option value="">Seleziona camera</option>
-            {rooms.length ? rooms.map(r => <option key={r.id} value={r.id}>{r.name}</option>) : (
+            {rooms.length ? rooms.map((r) => (
+              <option key={r.id} value={r.name}>{r.name}</option>
+            )) : (
               <>
-                {rooms.length ? rooms.map(r => (
-  <option key={r.id} value={r.id}>{r.name}</option>
-)) : (
-  <>
-    <option value="8bcf3913-af3a-484b-a202-c5be07f96d74">Cielo</option>
-    <option value="489c8a56-7a97-444f-b463-df60a815f86b">Monte</option>
-    <option value="2185d877-0f84-4283-a795-a38564019c1e">Sole</option>
-    <option value="af891a2c-2bde-4ac2-876e-da2817992be0">Bosco</option>
-    <option value="f366871a-1113-4720-878f-c06957cbfa17">Valle</option>
-  </>
-)}
+                <option value="Cielo">Cielo</option>
+                <option value="Monte">Monte</option>
+                <option value="Sole">Sole</option>
+                <option value="Bosco">Bosco</option>
+                <option value="Valle">Valle</option>
               </>
             )}
           </select>
         </label>
-        <label>Telefono<input name="phone"/></label>
-        <label>Email<input name="email"/></label>
-        <label>Stato<select name="status"><option>Confermata</option><option>In attesa</option><option>Annullata</option></select></label>
-        <label>Arrivo<input name="arrival" type="date"/></label>
-        <label>Partenza<input name="departure" type="date"/></label>
-        <label>Animali<select name="pets"><option>No</option><option>Sì</option></select></label>
-        <label>Adulti<input name="adults" type="number" defaultValue={2}/></label>
-        <label>Bambini<input name="children" type="number" defaultValue={0}/></label>
-        <label>Tariffa notte €<input name="rate" type="number"/></label>
-        <label>Caparra €<input name="deposit" type="number"/></label>
-        <label>Saldo pagato €<input name="paid" type="number"/></label>
-        <label>Servizi aggiuntivi<textarea name="extras"/></label>
-        <label className="full">Note interne<textarea name="notes"/></label>
-        <label className="full">Allergie / esigenze particolari<textarea name="allergies"/></label>
+
+        <label>Telefono<input name="phone" /></label>
+        <label>Email<input name="email" /></label>
+
+        <label>Stato
+          <select name="status">
+            <option>Confermata</option>
+            <option>In attesa</option>
+            <option>Annullata</option>
+          </select>
+        </label>
+
+        <label>Arrivo<input name="arrival" type="date" /></label>
+        <label>Partenza<input name="departure" type="date" /></label>
+
+        <label>Animali
+          <select name="pets">
+            <option>No</option>
+            <option>Sì</option>
+          </select>
+        </label>
+
+        <label>Adulti<input name="adults" type="number" defaultValue={2} /></label>
+        <label>Bambini<input name="children" type="number" defaultValue={0} /></label>
+        <label>Tariffa notte €<input name="rate" type="number" /></label>
+        <label>Caparra €<input name="deposit" type="number" /></label>
+        <label>Saldo pagato €<input name="paid" type="number" /></label>
+        <label>Servizi aggiuntivi<textarea name="extras" /></label>
+        <label className="full">Note interne<textarea name="notes" /></label>
+        <label className="full">Allergie / esigenze particolari<textarea name="allergies" /></label>
       </div>
-      <br/>
+
+      <br />
+
       <div className="actions">
         <button className="btn" type="submit">Salva prenotazione</button>
         <button className="btn secondary" type="reset">Svuota modulo</button>
       </div>
+
       {message && <p className="notice">{message}</p>}
     </form>
   );

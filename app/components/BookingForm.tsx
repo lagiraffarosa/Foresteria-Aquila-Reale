@@ -48,13 +48,15 @@ export default function BookingForm() {
       return;
     }
 
-    const bookingRes = await supabase.from('bookings').insert({
-      arrival,
-      departure,
-      adults,
-      children,
-      internal_notes: `Camera selezionata: ${roomId}\n${notes}${allergies ? '\nAllergie/esigenze: ' + allergies : ''}`
-    });
+  const bookingRes = await supabase.from('bookings').insert({
+  guest_id: guestRes.data.id,
+  arrival,
+  departure,
+  adults,
+  children,
+  status: 'Confermata',
+  internal_notes: `Camera selezionata: ${roomId}\n${notes}${allergies ? '\nAllergie/esigenze: ' + allergies : ''}`
+});
 
     if (bookingRes.error) {
       setMessage('Errore prenotazione: ' + bookingRes.error.message);

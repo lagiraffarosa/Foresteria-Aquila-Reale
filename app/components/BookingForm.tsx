@@ -71,7 +71,17 @@ export default function BookingForm() {
             <option value="">Seleziona camera</option>
             {rooms.length ? rooms.map(r => <option key={r.id} value={r.id}>{r.name}</option>) : (
               <>
-                <option>Cielo</option><option>Monte</option><option>Sole</option><option>Bosco</option><option>Valle</option>
+                {rooms.length ? rooms.map(r => (
+  <option key={r.id} value={r.id}>{r.name}</option>
+)) : (
+  <>
+    <option value="8bcf3913-af3a-484b-a202-c5be07f96d74">Cielo</option>
+    <option value="489c8a56-7a97-444f-b463-df60a815f86b">Monte</option>
+    <option value="2185d877-0f84-4283-a795-a38564019c1e">Sole</option>
+    <option value="af891a2c-2bde-4ac2-876e-da2817992be0">Bosco</option>
+    <option value="f366871a-1113-4720-878f-c06957cbfa17">Valle</option>
+  </>
+)}
               </>
             )}
           </select>

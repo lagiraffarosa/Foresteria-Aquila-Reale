@@ -50,12 +50,13 @@ export default function BookingForm() {
 
   const bookingRes = await supabase.from('bookings').insert({
   guest_id: guestRes.data.id,
+  room_id: roomId || null,
   arrival,
   departure,
   adults,
   children,
   status: 'Confermata',
-  internal_notes: `Camera selezionata: ${roomId}\n${notes}${allergies ? '\nAllergie/esigenze: ' + allergies : ''}`
+  internal_notes: notes + (allergies ? '\nAllergie/esigenze: ' + allergies : '')
 });
 
     if (bookingRes.error) {
@@ -78,7 +79,7 @@ export default function BookingForm() {
           <select name="room_id">
             <option value="">Seleziona camera</option>
             {rooms.length ? rooms.map((r) => (
-              <option key={r.id} value={r.name}>{r.name}</option>
+            <option key={r.id} value={r.id}>{r.name}</option>
             )) : (
               <>
                 <option value="Cielo">Cielo</option>

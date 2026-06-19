@@ -126,7 +126,13 @@ export default function BookingForm() {
 
       <div className="actions">
         <button className="btn" type="submit">Salva prenotazione</button>
-        <button className="btn secondary" type="reset">Svuota modulo</button>
+       <button
+  className="btn secondary"
+  type="reset"
+  onClick={() => setMessage('')}
+>
+  Svuota modulo
+</button>
       </div>
 
       {message && <p className="notice">{message}</p>}

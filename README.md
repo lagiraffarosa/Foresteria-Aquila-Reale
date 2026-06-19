@@ -1,5 +1,3 @@
-# Foresteria Aquila Reale Manager V1
+# Foresteria Aquila Reale Manager V2
 
-Prima dashboard cloud del gestionale.
-
-Prossimo passo: caricare su GitHub e importare su Vercel.
+Menu cliccabile e pagine base.

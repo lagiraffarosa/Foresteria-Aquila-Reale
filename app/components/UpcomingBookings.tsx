@@ -3,7 +3,7 @@ import { supabase } from '../../lib/supabase';
 export default async function UpcomingBookings() {
   const { data, error } = await supabase
     .from('bookings')
-    .select('id, arrival, departure, adults, children, internal_notes')
+    .select('id, arrival, departure, adults, children, internal_notes, rooms(name, room_number)')
     .order('arrival', { ascending: true })
     .limit(10);
 
@@ -17,18 +17,24 @@ export default async function UpcomingBookings() {
 
   return (
     <div>
-      {data.map((b: any) => (
-        <div className="row" key={b.id}>
-          <strong>{b.arrival} → {b.departure}</strong>
-          <span>
-            {b.internal_notes || 'Camera non indicata'} · {b.adults || 0} adulti · {b.children || 0} bambini
-          </span>
-          <span className="actions">
-            <button className="btn">Modifica</button>
-            <button className="btn secondary">Elimina</button>
-          </span>
-        </div>
-      ))}
+      {data.map((b: any) => {
+        const roomLabel = b.rooms
+          ? `${b.rooms.room_number || ''} - ${b.rooms.name}`.trim()
+          : b.internal_notes || 'Camera non indicata';
+
+        return (
+          <div className="row" key={b.id}>
+            <strong>{b.arrival} → {b.departure}</strong>
+            <span>
+              {roomLabel} · {b.adults || 0} adulti · {b.children || 0} bambini
+            </span>
+            <span className="actions">
+              <button className="btn">Modifica</button>
+              <button className="btn secondary">Elimina</button>
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }

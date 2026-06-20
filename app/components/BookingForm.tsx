@@ -157,8 +157,19 @@ if (conflicts && conflicts.length > 0) {
   Svuota modulo
 </button>
       </div>
-
-      {message && <p className="notice">{message}</p>}
+{message && (
+  <p
+    className="notice"
+    style={{
+      color: message.includes('occupata') || message.includes('Errore')
+        ? '#c62828'
+        : '#2e7d32',
+      fontWeight: 'bold'
+    }}
+  >
+    {message}
+  </p>
+)}
     </form>
   );
 }

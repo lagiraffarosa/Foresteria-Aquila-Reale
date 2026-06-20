@@ -30,8 +30,7 @@ export default async function UpcomingBookings() {
             </span>
             <span className="actions">
               <button className="btn">Modifica</button>
-              <button
-  className="btn secondary"
+              <button className="btn secondary"
   onClick={() => alert('Click rilevato')}
 >
   Elimina

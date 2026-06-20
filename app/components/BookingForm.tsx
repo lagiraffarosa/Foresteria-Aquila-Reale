@@ -10,25 +10,21 @@ export default function BookingForm() {
 
   useEffect(() => {
   async function loadRooms() {
-  const { data, error } = await supabase
-    .from('rooms')
-    .select('id,name,room_number')
-   const { data, error } = await supabase
-  .from('rooms')
-  .select('id,name,room_number')
-  .order('sort_order');
-    .order('sort_order');
+    const { data, error } = await supabase
+      .from('rooms')
+      .select('id,name,room_number')
+      .order('sort_order');
 
-  if (error) {
-    setMessage('Errore caricamento camere: ' + error.message);
-    return;
+    if (error) {
+      setMessage('Errore caricamento camere: ' + error.message);
+      return;
+    }
+
+    setRooms(data || []);
   }
 
-  setRooms(data || []);
-}
-    loadRooms();
-  }, []);
-
+  loadRooms();
+}, []);
   async function saveBooking(formData: FormData) {
     setMessage('Salvataggio in corso...');
 

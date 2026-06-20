@@ -43,7 +43,11 @@ useEffect(() => {
     if (!surname || !arrival || !departure) {
       setMessage('Inserisci almeno cognome, arrivo e partenza.');
       return;
-    }
+    } 
+    if (!roomId) {
+  setMessage('Seleziona una camera.');
+  return;
+}
 
     const guestRes = await supabase
       .from('guests')

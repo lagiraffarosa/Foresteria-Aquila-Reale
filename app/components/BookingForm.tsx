@@ -48,6 +48,22 @@ useEffect(() => {
   setMessage('Seleziona una camera.');
   return;
 }
+    const { data: conflicts, error: conflictError } = await supabase
+  .from('bookings')
+  .select('id')
+  .eq('room_id', roomId)
+  .lt('arrival', departure)
+  .gt('departure', arrival);
+
+if (conflictError) {
+  setMessage('Errore controllo disponibilità: ' + conflictError.message);
+  return;
+}
+
+if (conflicts && conflicts.length > 0) {
+  setMessage('Camera già occupata nelle date selezionate.');
+  return;
+}
 
     const guestRes = await supabase
       .from('guests')

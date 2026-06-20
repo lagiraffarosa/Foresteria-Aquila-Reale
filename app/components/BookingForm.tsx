@@ -79,7 +79,7 @@ export default function BookingForm() {
          <option value="">Seleziona camera</option>
 {rooms.map((r) => (
   <option key={r.id} value={r.id}>
-    {r.name}
+   {r.room_number ? `${r.room_number} - ${r.name}` : r.name}
   </option>
 ))}
           </select>

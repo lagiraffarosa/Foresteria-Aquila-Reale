@@ -5,7 +5,7 @@ export default async function UpcomingBookings() {
     .from('bookings')
     .select('id, arrival, departure, adults, children, internal_notes, rooms(name, room_number)')
     .order('arrival', { ascending: true })
-    .limit(10);
+    .limit(50);
 
   if (error) {
     return <p className="notice">Errore lettura prenotazioni: {error.message}</p>;

@@ -13,7 +13,10 @@ export default function BookingForm() {
   const { data, error } = await supabase
     .from('rooms')
     .select('id,name,room_number')
-    .eq('active', true)
+   const { data, error } = await supabase
+  .from('rooms')
+  .select('id,name,room_number')
+  .order('sort_order');
     .order('sort_order');
 
   if (error) {

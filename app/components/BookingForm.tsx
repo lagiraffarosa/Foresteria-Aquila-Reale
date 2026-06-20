@@ -9,10 +9,20 @@ export default function BookingForm() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    async function loadRooms() {
- const { data } = await supabase.from('rooms').select('id,name,room_number').order('sort_order');
-      if (data && data.length) setRooms(data);
-    }
+  async function loadRooms() {
+  const { data, error } = await supabase
+    .from('rooms')
+    .select('id,name,room_number')
+    .eq('active', true)
+    .order('sort_order');
+
+  if (error) {
+    setMessage('Errore caricamento camere: ' + error.message);
+    return;
+  }
+
+  setRooms(data || []);
+}
     loadRooms();
   }, []);
 

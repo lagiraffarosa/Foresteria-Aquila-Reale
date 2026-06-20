@@ -8,7 +8,7 @@ export default function BookingForm() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
+useEffect(() => {
   async function loadRooms() {
     const { data, error } = await supabase
       .from('rooms')

@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-
-type Room = { id: string; name: string };
+type Room = { id: string; name: string; room_number?: string };
 
 export default function BookingForm() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -11,7 +10,7 @@ export default function BookingForm() {
 
   useEffect(() => {
     async function loadRooms() {
-      const { data } = await supabase.from('rooms').select('id,name').order('sort_order');
+ const { data } = await supabase.from('rooms').select('id,name,room_number').order('sort_order');
       if (data && data.length) setRooms(data);
     }
     loadRooms();
@@ -77,18 +76,12 @@ export default function BookingForm() {
 
         <label>Camera
           <select name="room_id">
-            <option value="">Seleziona camera</option>
-            {rooms.length ? rooms.map((r) => (
-            <option key={r.id} value={r.id}>{r.name}</option>
-            )) : (
-              <>
-                <option value="Cielo">Cielo</option>
-                <option value="Monte">Monte</option>
-                <option value="Sole">Sole</option>
-                <option value="Bosco">Bosco</option>
-                <option value="Valle">Valle</option>
-              </>
-            )}
+         <option value="">Seleziona camera</option>
+{rooms.map((r) => (
+  <option key={r.id} value={r.id}>
+    {r.name}
+  </option>
+))}
           </select>
         </label>
 
